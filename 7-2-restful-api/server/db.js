@@ -8,6 +8,15 @@
 import mongoose from "mongoose";
 
 export async function connectDB(url) {
-  await mongoose.connect(url);
-  console.log("[DB] Mongo connected");
+  if (!url) {
+    throw new Error("MONGO_URL is missing");
+  }
+
+  try {
+    await mongoose.connect(url);
+    console.log("[DB] Mongo connected");
+  } catch (err) {
+    console.error("[DB] Connection error:", err.message);
+    throw err;
+  }
 }
